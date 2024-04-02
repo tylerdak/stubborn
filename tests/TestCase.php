@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -14,7 +13,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        File::put(__DIR__ . '/Feature/test.stub', <<<EOL
+        file_put_contents(__DIR__ . '/Feature/test.stub', <<<EOL
 <?php
 
 namespace {{ NAMESPACE }};
@@ -24,6 +23,11 @@ class {{ CLASS }}
     use Illuminate\Database\Eloquent\Factories\{{ TRAIT }};
 }
 EOL
-);
+        );
+    }
+    
+    protected function tearDown(): void
+    {
+        unlink(__DIR__ . '/Feature/test.stub');
     }
 }

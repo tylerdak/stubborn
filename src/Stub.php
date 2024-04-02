@@ -2,7 +2,6 @@
 
 namespace Dakin\Stubborn;
 
-use Illuminate\Support\Facades\File;
 use RuntimeException;
 
 class Stub
@@ -111,17 +110,17 @@ class Stub
     public function generate(): bool
     {
         // Check path is valid
-        if (! File::exists($this->from)) {
+        if (! file_exists($this->from)) {
             throw new RuntimeException('The stub file does not exist, please enter a valid path.');
         }
 
         // Check destination path is valid
-        if (! File::isDirectory($this->to)) {
+        if (! is_dir($this->to)) {
             throw new RuntimeException('The given folder path is not valid.');
         }
 
         // Get file content
-        $content = File::get($this->from);
+        $content = file_get_contents($this->from);
 
         // Replace variables
         foreach ($this->replaces as $search => $value) {
@@ -132,10 +131,10 @@ class Stub
         $path = $this->getPath();
 
         // Move file
-        File::move($this->from, $path);
+        copy($this->from, $path);
 
         // Put content and write on file
-        File::put($path, $content);
+        file_put_contents($path, $content);
 
         return true;
     }
