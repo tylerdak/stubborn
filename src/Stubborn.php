@@ -1,12 +1,11 @@
 <?php
 
-namespace Binafy\LaravelStub;
+namespace Dakin\Stubborn;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
 use RuntimeException;
 
-class LaravelStub
+class Stubborn
 {
     /**
      * Stub path.
@@ -103,16 +102,6 @@ class LaravelStub
         }
 
         return $this;
-    }
-
-    /**
-     * Download the stub file.
-     */
-    public function download()
-    {
-        $this->generate();
-
-        return Response::download($this->getPath());
     }
 
     /**

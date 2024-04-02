@@ -1,28 +1,19 @@
 {
-    "name": "binafy/laravel-stub",
-    "description": "Generate stub files easy",
+    "name": "tylerdak/stubborn",
+    "description": "Generate stub files easily",
     "keywords": [
-        "binafy",
-        "milwad",
-        "laravel",
-        "framework",
-        "stub",
         "filesystem",
         "generate stub",
-        "laravel stub package",
-        "laravel package",
-        "laravel-stub",
-        "laravel stub",
-        "laravel stub package",
-        "laravel stub binafy"
+        "stub package",
+        "stub"
     ],
-    "homepage": "https://github.com/binafy/laravel-stub",
+    "homepage": "https://github.com/tylerdak/stubborn",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^9.0|^10.0|^11.0"
+        "illuminate/support": "^11"
     },
     "require-dev": {
         "pestphp/pest-plugin-laravel": "1.*|2.*",
@@ -30,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Binafy\\LaravelStub\\": "src/"
+            "Dakin\\Stubborn\\": "src/"
         }
     },
     "autoload-dev": {
@@ -46,9 +37,10 @@
             "homepage": "https://github.com/milwad-dev"
         },
         {
-            "name": "binafy",
-            "role": "owner",
-            "homepage": "https://github.com/binafy"
+            "name": "tylerdak",
+            "email": "tyler@dakin.one",
+            "role": "author",
+            "homepage": "https://github.com/tylerdak"
         }
     ],
     "config": {
@@ -60,12 +52,5 @@
     "scripts": {
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage-html ./coverage"
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Binafy\\LaravelStub\\Providers\\LaravelStubServiceProvider"
-            ]
-        }
     }
 }
