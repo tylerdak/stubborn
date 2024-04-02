@@ -1,19 +1,11 @@
-## Laravel Stub
-
-<img src="https://banners.beyondco.de/Laravel%20Stub.png?theme=dark&packageManager=composer+require&packageName=binafy%2Flaravel-stub&pattern=yyy&style=style_1&description=Generate+stub+files+very+easy+in+Laravel+framework&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" alt="laravel-stub-banner">
-
-[![PHP Version Require](http://poser.pugx.org/binafy/laravel-stub/require/php)](https://packagist.org/packages/binafy/laravel-stub)
-[![Latest Stable Version](http://poser.pugx.org/binafy/laravel-stub/v)](https://packagist.org/packages/binafy/laravel-stub)
-[![Total Downloads](http://poser.pugx.org/binafy/laravel-stub/downloads)](https://packagist.org/packages/binafy/laravel-stub)
-[![License](http://poser.pugx.org/binafy/laravel-stub/license)](https://packagist.org/packages/binafy/laravel-stub)
-[![Passed Tests](https://github.com/binafy/laravel-stub/actions/workflows/tests.yml/badge.svg)](https://github.com/binafy/laravel-stub/actions/workflows/tests.yml)
+## Stubborn for PHP
 
 - [Introduction](#introduction)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
     - [Create a stub file](#create-a-stub-file)
-    - [How to use Laravel Stub](#how-using-laravel-stub)
+    - [How to use Stubborn](#how-using-stubborn)
     - [`from`](#from)
     - [`to`](#to)
     - [`name`](#name)
@@ -30,27 +22,22 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel-Stub package enhances the development workflow in Laravel by providing a set of customizable stubs. Stubs are templates used to scaffold code snippets for various components like models, controllers, and migrations. With Laravel-Stub, developers can easily tailor these stubs to match their project's coding standards and conventions. This package aims to streamline the code generation process, fostering consistency and efficiency in Laravel projects. Explore the customization options and boost your development speed with Laravel-Stub.
+The Stubborn package enhances the PHP development workflow by providing a set of customizable stubs. Stubs are templates used to scaffold code snippets for various components like models, controllers, and migrations. With Stubborn, developers can easily tailor these stubs to match their project's coding standards and conventions. This package aims to streamline the code generation process, fostering consistency and efficiency in PHP projects. Explore the customization options and boost your development speed with Stubborn.
 
 <a name="requirements"></a>
 ## Requirements
 
 ***
 - ```PHP >= 8.0```
-- ```Laravel >= 9.0```
 
-
-| Version/Laravel | L9                 | L10                | L11                |
-|-----------------|--------------------|--------------------|--------------------|
-| 1.0             | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 <a name="installation"></a>
 ## Installation
 
-You can install the package with Composer:
-
+You can install the package with Composer, but make sure to add this repository (as type git) in your composer.json. When this package is available on packagist, you can skip this step (and it won't be mentioned here).
+Once the repository is added, run:
 ```bash
-composer require binafy/laravel-stub
+composer require tylerdak/stubborn
 ```
 
 You don't need to publish anything.
@@ -79,15 +66,15 @@ class {{ CLASS }}
 }
 ```
 
-<a name="how-using-laravel-stub"></a>
-### How to use Laravel Stub
+<a name="how-using-stubborn"></a>
+### How to Use Stubborn
 
-You may use Laravel Stub, you need to use the `LaravelStub` facade:
+In order to use Stubborn, you need to import the `Stubborn\Stub` class:
 
 ```php
-use Binafy\LaravelStub\Facades\LaravelStub;
+use Dakin\Stubborn\Stub;
 
-LaravelStub::class;
+Stub::class;
 ```
 
 <a name="from"></a>
@@ -96,26 +83,26 @@ LaravelStub::class;
 First thing, you need to use the `from` method to give the stub path:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub');
+Stub::from(__DIR__ . 'model.stub');
 ```
 
 <a name="to"></a>
 ### `to`
 
-So, you need to determine the destination path of the stub file:
+Next, you'll want to specify the destination directory of the stub file:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App');
 ```
 
 <a name="name"></a>
 ### `name`
 
-You can determine the stub file but also attention don't write the stub extension:
+You can set the stub file with this, but make sure to **leave out the stub extension**:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model');
 ```
@@ -126,7 +113,7 @@ LaravelStub::from(__DIR__ . 'model.stub')
 You can determine the stub extension:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
     ->ext('php');
@@ -138,7 +125,7 @@ LaravelStub::from(__DIR__ . 'model.stub')
 The `replace` method takes two parameters, the first one is the key (variable) and the second one is the value. The value will be replaced with the variable:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
     ->ext('php')
@@ -151,60 +138,41 @@ LaravelStub::from(__DIR__ . 'model.stub')
 The `replaces` method takes an array. If you want to replace multiple variables you can use this method:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
     ->ext('php')
     ->replaces([
         'NAMESPACE' => 'App',
-        'CLASS' => 'Milwad'
+        'CLASS' => 'MyClass'
     ]);
-```
-
-<a name="download"></a>
-### `download`
-
-If you want to download the stub file, you can use the `download` method:
-
-```php
-LaravelStub::from(__DIR__ . 'model.stub')
-    ->to(__DIR__ . '/App')
-    ->name('new-model')
-    ->ext('php')
-    ->replaces([
-        'NAMESPACE' => 'App',
-        'CLASS' => 'Milwad'
-    ])
-    ->download(); // Return download response
 ```
 
 <a name="generate"></a>
 ### `generate`
 
-The important method is `generate`. To generate the stub file at the end you need to use the `generate` method to generate stub file:
+To generate the stub file, you need to use the `generate` method at the end of the chain to generate stub file:
 
 ```php
-LaravelStub::from(__DIR__ . 'model.stub')
+Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
     ->ext('php')
     ->replaces([
         'NAMESPACE' => 'App',
-        'CLASS' => 'Milwad'
+        'CLASS' => 'MyClass'
     ])
     ->generate();
 ```
 
-> **_NOTE:_**  Don't use the `download` and `generate` methods in one chain.
-
-The final file will be like this (`new-model.php`):
+If you're following along, the final file should be named `new-model.php` and look something like this:
 
 ```php
 <?php
 
 namespace App;
 
-class Milwad
+class MyClass
 {
     
 }
@@ -212,22 +180,14 @@ class Milwad
 
 <a name="contributors"></a>
 ## Contributors
-
-Thanks to all the people who contributed. [Contributors](https://github.com/binafy/laravel-stub/graphs/contributors).
-
-<a href="https://github.com/binafy/laravel-stub/graphs/contributors"><img src="https://opencollective.com/laravel-stub/contributors.svg?width=890&button=false" /></a>
+The crew at [Binafy](https://github.com/binafy) did most of the heavy lifting on this with their [Laravel-embedded version](https://github.com/binafy/laravel-stub) of this package.
 
 <a name="security"></a>
 ## Security
 
-If you discover any security-related issues, please email `binafy23@gmail.com` instead of using the issue tracker.
-
-<a name="chanelog"></a>
-## Changelog
-
-The changelog can be found in the `CHANGELOG.md` file of the GitHub repository. It lists the changes, bug fixes, and improvements made to each version of the Laravel User Monitoring package.
+If you discover any security-related issues, please email `tyler@dakin.one` instead of using the issue tracker.
 
 <a name="license"></a>
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/binafy/laravel-stub/blob/1.x/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/tylerdak/stubborn/blob/1.x/LICENSE) for more information.
