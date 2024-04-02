@@ -5,7 +5,7 @@ namespace Dakin\Stubborn;
 use Illuminate\Support\Facades\File;
 use RuntimeException;
 
-class Stubborn
+class Stub
 {
     /**
      * Stub path.
@@ -45,11 +45,12 @@ class Stubborn
     /**
      * Set stub path.
      */
-    public function from(string $path): static
+    public static function from(string $path): static
     {
-        $this->from = $path;
+        $new = new self();
+        $new->from = $path;
 
-        return $this;
+        return $new;
     }
 
     /**

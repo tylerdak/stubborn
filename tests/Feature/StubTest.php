@@ -1,14 +1,14 @@
 <?php
 
-use Binafy\LaravelStub\Facades\LaravelStub;
+use Dakin\Stubborn\Stub;
 
 test('generate stub successfully with all options', function () {
     $stub = __DIR__ . '/test.stub';
 
-    $generate = LaravelStub::from($stub)
+    $generate = Stub::from($stub)
         ->to(__DIR__ . '/../App')
         ->replaces([
-            'CLASS' => 'Milwad',
+            'CLASS' => 'Dakin',
             'NAMESPACE' => 'App\Models'
         ])
         ->replace('TRAIT', 'HasFactory')
@@ -22,7 +22,7 @@ test('generate stub successfully with all options', function () {
 });
 
 test('throw exception when stub path is invalid', function () {
-    $generate = LaravelStub::from('test.stub')
+    $generate = Stub::from('test.stub')
         ->to(__DIR__ . '/../App')
         ->name('new-test')
         ->ext('php')
@@ -33,7 +33,7 @@ test('throw exception when stub path is invalid', function () {
 })->expectExceptionMessage('The stub file does not exist, please enter a valid path.');
 
 test('throw exception when destination path is invalid', function () {
-    $generate = LaravelStub::from(__DIR__ . '/test.stub')
+    $generate = Stub::from(__DIR__ . '/test.stub')
         ->to('App')
         ->name('new-test')
         ->ext('php')

@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Binafy\LaravelStub\Providers\LaravelStubServiceProvider;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -26,15 +25,5 @@ class {{ CLASS }}
 }
 EOL
 );
-    }
-
-    /**
-     * Get package providers.
-     */
-    protected function getPackageProviders($app): array
-    {
-        return [
-            LaravelStubServiceProvider::class,
-        ];
     }
 }
