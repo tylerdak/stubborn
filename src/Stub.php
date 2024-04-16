@@ -42,6 +42,26 @@ class Stub
     protected array $replaces;
 
     /**
+     * The regex string that finds replace candidates.
+     *
+     * @var string
+     */
+    protected static string $_searchRegex = "/{{\s(?<key>[\S-]+?)(?<mod>(?:\:\:(?:\w+))+)?\s}}/m";
+
+    /**
+     * Holds content.
+     *
+     * @var string
+     */
+    protected ?string $contentBuffer = null;
+
+    protected static function modFunctions() {
+        return [
+            'lower' => fn ($value) => strtolower($value),
+        ];
+    }
+
+    /**
      * Set stub path.
      */
     public static function from(string $path): static
@@ -50,6 +70,15 @@ class Stub
         $new->from = $path;
 
         return $new;
+    }
+
+    protected static function tryModFunction(string $mod, string $value): string
+    {
+        $mod = strtolower($mod);
+        if ($todo = static::modFunctions()[$mod] ?? null) {
+            return $todo($value);
+        }
+        return $value;
     }
 
     /**
@@ -104,27 +133,81 @@ class Stub
         return $this;
     }
 
+    public function matches(): array
+    {
+        $this->loadContentFromSource();
+
+        $matches = [];
+        preg_match_all(static::$_searchRegex, $this->contentBuffer, $matches, PREG_SET_ORDER);
+
+        $matchLib = [];
+
+        foreach($matches as $index => $match) {
+            $toAdd = [
+                'match' => $match[0],
+                'token' => $match['key'] . ($match['mod'] ?? null)
+            ];
+
+            if (! $key = $match['key'] ?? null) {
+                continue;
+            }
+            if (! array_key_exists($key, $this->replaces)) {
+                continue;
+            }
+            if (! is_array($matchLib[$key] ?? null)) {
+                $matchLib[$key] = [$toAdd];
+                continue;
+            }
+            $matchLib[$key][] = $toAdd;
+        }
+
+        return $matchLib;
+    }
+
+    public function loadContentFromSource(bool $cached = true): string
+    {
+        if ($this->contentBuffer && $cached) {
+            return $this->contentBuffer;
+        }
+
+        $this->validateSource();
+
+        return ($this->contentBuffer = file_get_contents($this->from));
+    }
+
     /**
      * Generate stub file.
      */
     public function generate(): bool
     {
-        // Check path is valid
-        if (! file_exists($this->from)) {
-            throw new RuntimeException('The stub file does not exist, please enter a valid path.');
-        }
-
         // Check destination path is valid
         if (! is_dir($this->to)) {
             throw new RuntimeException('The given folder path is not valid.');
         }
 
-        // Get file content
-        $content = file_get_contents($this->from);
+        // Validates src path and reads content
+        $this->loadContentFromSource(cached:false);
+
+        $results = $this->matches();
 
         // Replace variables
         foreach ($this->replaces as $search => $value) {
-            $content = str_replace("{{ $search }}", $value, $content);
+            if ($matches = $results[$search] ?? null) {
+                foreach($matches as $match) {
+                    $toReplace = $match['match'];
+
+                    $mods = array_slice(
+                        explode('::',$match['token']),
+                        1
+                    );
+
+                    foreach($mods as $mod) {
+                        $value = static::tryModFunction($mod,$value);
+                    }
+
+                    $this->contentBuffer = str_replace($toReplace, $value, $this->contentBuffer);
+                }
+            }
         }
 
         // Get correct path
@@ -134,7 +217,7 @@ class Stub
         copy($this->from, $path);
 
         // Put content and write on file
-        file_put_contents($path, $content);
+        file_put_contents($path, $this->contentBuffer);
 
         return true;
     }
@@ -153,4 +236,12 @@ class Stub
 
         return $path;
     }
+
+    private function validateSource(): void {
+        // Check path is valid
+        if (! file_exists($this->from)) {
+            throw new RuntimeException('The stub file does not exist, please enter a valid path.');
+        }
+    }
+
 }
