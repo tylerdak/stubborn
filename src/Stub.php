@@ -55,12 +55,6 @@ class Stub
      */
     protected ?string $contentBuffer = null;
 
-    protected static function modFunctions() {
-        return [
-            'lower' => fn ($value) => strtolower($value),
-        ];
-    }
-
     /**
      * Set stub path.
      */
@@ -72,7 +66,14 @@ class Stub
         return $new;
     }
 
-    protected static function tryModFunction(string $mod, string $value): string
+    protected static function modFunctions() {
+        return [
+            'lower' => fn ($value) => strtolower($value),
+            'upper' => fn ($value) => strtoupper($value),
+        ];
+    }
+
+    protected static function applyModifier(string $mod, string $value): string
     {
         $mod = strtolower($mod);
         if ($todo = static::modFunctions()[$mod] ?? null) {
@@ -202,7 +203,7 @@ class Stub
                     );
 
                     foreach($mods as $mod) {
-                        $value = static::tryModFunction($mod,$value);
+                        $value = static::applyModifier($mod,$value);
                     }
 
                     $this->contentBuffer = str_replace($toReplace, $value, $this->contentBuffer);
