@@ -1,5 +1,5 @@
 <?php
-   
+
 use Dakin\Stubborn\Support\Str;
 
 describe('Str', function () {
@@ -30,5 +30,24 @@ describe('Str', function () {
         expect(Str::camel('foo_bar'))->toBe('fooBar'); // duplicated to test the cache
         expect(Str::camel('Foo-barBaz'))->toBe('fooBarBaz');
         expect(Str::camel('foo-bar_baz'))->toBe('fooBarBaz');
+    });
+
+    test('kebab', function () {
+        $pre = "wordtime";
+        $post = "wordtime";
+        expect(Str::kebab($pre))->toBe($post);
+
+        $pre = "word time";
+        $post = "word-time";
+        expect(Str::kebab($pre))->toBe($post);
+
+        $pre = "wordTime";
+        $post = "word-time";
+        expect(Str::kebab($pre))->toBe($post);
+
+        $pre = "word_time";
+        $post = "word-time";
+        expect(Str::kebab($pre))->toBe($post);
+
     });
 });
