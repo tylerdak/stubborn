@@ -77,19 +77,6 @@ class Str
     }
 
     /**
-     * Convert the case of a string.
-     *
-     * @param  string  $string
-     * @param  int  $mode
-     * @param  string|null  $encoding
-     * @return string
-     */
-    public static function convertCase(string $string, int $mode = MB_CASE_FOLD, ?string $encoding = 'UTF-8')
-    {
-        return mb_convert_case($string, $mode, $encoding);
-    }
-
-    /**
      * Convert a string to kebab case.
      *
      * @param  string  $value
@@ -364,7 +351,7 @@ class Str
         }
 
         if (! ctype_lower($value)) {
-            $value = preg_replace('/\s+/u', '', ucwords($value));
+            $value = preg_replace('/[\s]+/u', '', ucwords($value));
 
             $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, $value));
         }
