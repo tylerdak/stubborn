@@ -11,11 +11,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use League\CommonMark\Extension\InlinesOnly\InlinesOnlyExtension;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
-use League\CommonMark\MarkdownConverter;
-use voku\helper\ASCII;
+namespace Dakin\Stubborn\Support;
 
 class Str
 {
@@ -262,7 +258,7 @@ class Str
             ? array_map([static::class, 'title'], $parts)
             : array_map([static::class, 'title'], static::ucsplit(implode('_', $parts)));
 
-        $collapsed = static::replace(['-', '_', ' '], '_', implode('_', $parts));
+        $collapsed = str_replace(['-','_',' '], '_', implode('_',$parts));
 
         return implode(' ', array_filter(explode('_', $collapsed)));
     }
@@ -449,7 +445,7 @@ class Str
             return static::$studlyCache[$key];
         }
 
-        $words = explode(' ', static::replace(['-', '_'], ' ', $value));
+        $words = explode(' ', str_replace(['-','_'], ' ', $value));
 
         $studlyWords = array_map(fn ($word) => static::ucfirst($word), $words);
 
@@ -487,7 +483,7 @@ class Str
      */
     public static function lcfirst($string)
     {
-        return static::lower(static::substr($string, 0, 1)).static::substr($string, 1);
+        return static::lower(mb_substr($string, 0, 1)).mb_substr($string, 1);
     }
 
     /**
@@ -498,7 +494,7 @@ class Str
      */
     public static function ucfirst($string)
     {
-        return static::upper(static::substr($string, 0, 1)).static::substr($string, 1);
+        return static::upper(mb_substr($string, 0, 1)).mb_substr($string, 1);
     }
 
     /**
