@@ -351,9 +351,16 @@ class Str
         }
 
         if (! ctype_lower($value)) {
-            $value = preg_replace('/[\s]+/u', '', ucwords($value));
-
-            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1'.$delimiter, $value));
+            $search = [
+                '/[\s_-]+/u',
+                '/([A-Z])/u'
+            ];
+            $replace = [
+                ' ',
+                ' $1'
+            ];
+            $value = preg_replace($search, $replace, $value);
+            $value = static::lower(str_replace(' ', $delimiter, trim($value)));
         }
 
         return static::$snakeCache[$key][$delimiter] = $value;
