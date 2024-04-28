@@ -76,4 +76,45 @@ describe('Str', function () {
             expect(Str::numbers($pre))->toBe($post);
         }
     });
+
+    test('reverse', function () {
+        $testLib = [
+            'reverse' => 'esrever',
+            'racecar' => 'racecar',
+            '%90e$3*Jhh' => 'hhJ*3$e09%',
+            '' => '',
+            "  \t\nokay" => "yako\n\t  ",
+            'Teniszütő' => 'őtüzsineT',
+            '❤MultiByte☆' => '☆etyBitluM❤',
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::reverse($pre))->toBe($post);
+        }
+    });
+
+    test('upper', function () {
+        $testLib = [
+            'you could be a plumber' => 'YOU COULD BE A PLUMBER',
+            'yOu CoUlD bE a PlUmBeR' => 'YOU COULD BE A PLUMBER',
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::upper($pre))->toBe($post);
+        }
+    });
+
+    test('title', function () {
+        $testLib = [
+            'i need this in tITle case' => 'I Need This In Title Case',
+            'i-love-title-case' => 'I Love Title Case',
+            'i_love_title_case' => 'I Love Title Case',
+            'iLoveTitleCase' => 'I Love Title Case',
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::title($pre))->toBe($post);
+        }
+    });
+
 });
