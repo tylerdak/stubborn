@@ -4,53 +4,74 @@ use Dakin\Stubborn\Support\Str;
 
 describe('Str', function () {
     test('camel', function () {
-        $pre = "wordtime";
-        $post = "wordtime";
-        expect(Str::camel($pre))->toBe($post);
+        $testLib = [
+            'wordtime' => 'wordtime',
+            "word time" => "wordTime",
+            "word-time" => "wordTime",
+            "word_time" => "wordTime",
+            'Stubborn_p_h_p_package' => 'stubbornPHPPackage',
+            'Stubborn_php_package' => 'stubbornPhpPackage',
+            'Stubborn-phP-package' => 'stubbornPhPPackage',
+            'Stubborn  -_-  php   -_-   package   ' => 'stubbornPhpPackage',
+            'FooBar' => 'fooBar',
+            'foo_bar' => 'fooBar',
+            'foo_bar' => 'fooBar',
+            'Foo-barBaz' => 'fooBarBaz',
+            'foo-bar_baz' => 'fooBarBaz',
+        ];
 
-        $pre = "word time";
-        $post = "wordTime";
-        expect(Str::camel($pre))->toBe($post);
+        foreach ($testLib as $pre => $post) {
+            expect(Str::camel($pre))->toBe($post);
+        }
 
-        $pre = "word-time";
-        $post = "wordTime";
-        expect(Str::camel($pre))->toBe($post);
-
-        $pre = "word_time";
-        $post = "wordTime";
-        expect(Str::camel($pre))->toBe($post);
-
-        expect(Str::camel('Stubborn_p_h_p_package'))->toBe('stubbornPHPPackage');
-        expect(Str::camel('Stubborn_php_package'))->toBe('stubbornPhpPackage');
-        expect(Str::camel('Stubborn-phP-package'))->toBe('stubbornPhPPackage');
-        expect(Str::camel('Stubborn  -_-  php   -_-   package   '))->toBe('stubbornPhpPackage');
-
-        expect(Str::camel('FooBar'))->toBe('fooBar');
-        expect(Str::camel('foo_bar'))->toBe('fooBar');
-        expect(Str::camel('foo_bar'))->toBe('fooBar'); // duplicated to test the cache
-        expect(Str::camel('Foo-barBaz'))->toBe('fooBarBaz');
-        expect(Str::camel('foo-bar_baz'))->toBe('fooBarBaz');
     });
 
     test('kebab', function () {
-        $pre = "wordtime";
-        $post = "wordtime";
-        expect(Str::kebab($pre))->toBe($post);
+        $testLib = [
+            "wordtime" => "wordtime",
+            "word time" => "word-time",
+            "wordTime" => "word-time",
+            "word_time" => "word-time",
+            "StubbornPhpPackage" => "stubborn-php-package",
+        ];
 
-        $pre = "word time";
-        $post = "word-time";
-        expect(Str::kebab($pre))->toBe($post);
+        foreach ($testLib as $pre => $post) {
+            expect(Str::kebab($pre))->toBe($post);
+        }
+    });
 
-        $pre = "wordTime";
-        $post = "word-time";
-        expect(Str::kebab($pre))->toBe($post);
+    test('length', function () {
+        $testLib = [
+            '' => 0,
+            ' ' => 1,
+            '  _ test -hm' => 12,
+        ];
 
-        $pre = "word_time";
-        $post = "word-time";
-        expect(Str::kebab($pre))->toBe($post);
+        foreach ($testLib as $pre => $post) {
+            expect(Str::length($pre))->toBe($post);
+        }
+    });
 
-        $pre = "StubbornPhpPackage";
-        $post = "stubborn-php-package";
-        expect(Str::kebab($pre))->toBe($post);
+    test('lower', function () {
+        $testLib = [
+            'YOU COULD BE A PLUMBER' => 'you could be a plumber',
+            'yOu CoUlD bE a PlUmBeR' => 'you could be a plumber',
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::lower($pre))->toBe($post);
+        }
+    });
+
+    test('numbers', function () {
+        $testLib = [
+            '2#zN43%u!rAAZ%c5!6M%P3e9YoM1^kU!J7AisSVuB!9k$39#99dO027' => '24356391793999027',
+            'there shouldn\'t be any numbers here _ :(' => '',
+            '42069' => '42069',
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::numbers($pre))->toBe($post);
+        }
     });
 });
