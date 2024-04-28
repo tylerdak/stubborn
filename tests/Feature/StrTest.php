@@ -33,6 +33,8 @@ describe('Str', function () {
             "wordTime" => "word-time",
             "word_time" => "word-time",
             "StubbornPhpPackage" => "stubborn-php-package",
+            'Stubborn_php_package' => 'stubborn-php-package',
+            'Stubborn_php_PAckage' => 'stubborn-php-p-ackage',
         ];
 
         foreach ($testLib as $pre => $post) {

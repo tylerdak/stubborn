@@ -360,7 +360,7 @@ class Str
                 ' $1'
             ];
             $value = preg_replace($search, $replace, $value);
-            $value = static::lower(str_replace(' ', $delimiter, trim($value)));
+            $value = static::lower(preg_replace('/[\s]+/u', $delimiter, trim($value)));
         }
 
         return static::$snakeCache[$key][$delimiter] = $value;
