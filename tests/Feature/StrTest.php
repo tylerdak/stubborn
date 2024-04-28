@@ -49,5 +49,8 @@ describe('Str', function () {
         $post = "word-time";
         expect(Str::kebab($pre))->toBe($post);
 
+        $pre = "StubbornPhpPackage";
+        $post = "stubborn-php-package";
+        expect(Str::kebab($pre))->toBe($post);
     });
 });
