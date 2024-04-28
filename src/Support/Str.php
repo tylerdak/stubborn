@@ -228,17 +228,13 @@ class Str
      */
     public static function title($value)
     {
-        if (!str_contains($value,' ')) {
-            // if the string doesn't already have individual words to title case,
-            // we'll assume it's in snake, kebab, or camel and convert it to
-            // a lower case with spaces through the snake method
-            $value = static::snake($value,' ');
-        }
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
 
     /**
      * Convert the given string to proper case for each word.
+     *
+     * Use this when converting from snake, kebab, or camel case.
      *
      * @param  string  $value
      * @return string

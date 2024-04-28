@@ -107,13 +107,33 @@ describe('Str', function () {
     test('title', function () {
         $testLib = [
             'i need this in tITle case' => 'I Need This In Title Case',
-            'i-love-title-case' => 'I Love Title Case',
-            'i_love_title_case' => 'I Love Title Case',
-            'iLoveTitleCase' => 'I Love Title Case',
+
+            'jefferson costella' => 'Jefferson Costella',
+            'jefFErson coSTella' => 'Jefferson Costella',
+            '' => '',
+            '123 stubborn' => '123 Stubborn',
+            '❤stubborn' => '❤Stubborn',
+            'stubborn ❤' => 'Stubborn ❤',
+            'stubborn123' => 'Stubborn123',
+            'Stubborn123' => 'Stubborn123',
         ];
 
         foreach ($testLib as $pre => $post) {
             expect(Str::title($pre))->toBe($post);
+        }
+    });
+
+    test('headline', function () {
+        $testLib = [
+            'i need this in tITle case' => 'I Need This In Title Case',
+            'i-love-title-case' => 'I Love Title Case',
+            'i_love_title_case' => 'I Love Title Case',
+            'iLoveTitleCase' => 'I Love Title Case',
+
+        ];
+
+        foreach ($testLib as $pre => $post) {
+            expect(Str::headline($pre))->toBe($post);
         }
     });
 
