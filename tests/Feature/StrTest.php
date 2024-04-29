@@ -131,9 +131,7 @@ describe('Str', function () {
             'iLoveTitleCase' => 'I Love Title Case',
         ];
 
-        foreach ($testLib as $pre => $post) {
-            expect(Str::headline($pre))->toBe($post);
-        }
+        self::bulkCompare([Str::class,"headline"],$testLib);
     });
 
     test('apa', function () {
@@ -169,9 +167,32 @@ describe('Str', function () {
             'To Kill A Mockingbird' => 'To Kill a Mockingbird',
         ];
 
-        foreach ($testLib as $pre => $post) {
-            expect(Str::apa($pre))->toBe($post);
-        }
+        self::bulkCompare([Str::class,"apa"],$testLib);
     });
 
+    test('slug', function () {
+        $testLib = [
+            'this is the title they\'re always using' => 'this-is-the-title-theyre-always-using',
+            'anemail@email_depot.com' => 'anemail-at-email-depotcom',
+
+            'hello world' => 'hello-world',
+            'hello-world' => 'hello-world',
+            'hello_world' => 'hello-world',
+            'hello_world' => ['hello_world', '_'],
+            'user@host' => 'user-at-host',
+            'سلام دنیا' => ['سلام-دنیا', '-', null],
+            'some text' => ['sometext', ''],
+            '' => ['', ''],
+            '' => '',
+            '500$ bill' => ['500-dollar-bill', '-', 'en', ['$' => 'dollar']],
+            '500--$----bill' => ['500-dollar-bill', '-', 'en', ['$' => 'dollar']],
+            '500-$-bill' => ['500-dollar-bill', '-', 'en', ['$' => 'dollar']],
+            '500$--bill' => ['500-dollar-bill', '-', 'en', ['$' => 'dollar']],
+            '500-$--bill' => ['500-dollar-bill', '-', 'en', ['$' => 'dollar']],
+            'أحمد@المدرسة' => ['أحمد-في-المدرسة', '-', null, ['@' => 'في']],
+        ];
+
+        self::bulkCompare([Str::class, 'slug'],$testLib);
+        $this->assertSame('bsm-allah',Str::slug('بسم الله', '-', 'en', ['allh' => 'allah']));
+    });
 });

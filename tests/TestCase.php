@@ -44,4 +44,18 @@ EOL
         unlink(__DIR__ . '/Feature/test.stub');
         array_map('unlink', glob(__DIR__ . '/Feature/test*.stub'));
     }
+
+    protected function bulkCompare($callback,$arr) {
+        foreach($arr as $pre => $val) {
+            $args = [];
+            if (is_array($val)) {
+                $post = $val[0] ?? null;
+                $args = array_slice($val,1);
+            }
+            else {
+                $post = $val;
+            }
+            expect($callback($pre,...$args))->toBe($post);
+        }
+    }
 }
