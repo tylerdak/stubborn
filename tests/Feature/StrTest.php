@@ -256,4 +256,57 @@ describe('Str', function () {
 
         self::bulkCompare([Str::class, 'trim'],$testLib);
     });
+
+    test('ltrim', function () {
+        $testLib = [
+            '         omg too many left white spaces        ' => 'omg too many left white spaces        ',
+
+            ' foo    bar ' => 'foo    bar ',
+
+            '   123    ' => '123    ',
+            'だ' => 'だ',
+            'ム' => 'ム',
+            '   だ    ' => 'だ    ',
+            '   ム    ' => 'ム    ',
+
+            " \xE9 " => "\xE9 ",
+        ];
+
+        expect(
+            'foo bar
+            '
+        )->toBe(
+            Str::ltrim('
+                foo bar
+            ')
+        );
+
+        self::bulkCompare([Str::class, 'ltrim'],$testLib);
+    });
+
+    test('rtrim', function () {
+        $testLib = [
+            '         omg too many left white spaces        ' => '         omg too many left white spaces',
+
+            '   123    ' => '   123',
+            'だ' => 'だ',
+            'ム' => 'ム',
+            '   だ    ' => '   だ',
+            '   ム    ' => '   ム',
+
+            " \xE9 " => " \xE9",
+        ];
+
+        expect(
+            '
+                foo bar'
+        )->toBe(
+            Str::rtrim('
+                foo bar
+            ')
+        );
+
+
+        self::bulkCompare([Str::class, 'rtrim'],$testLib);
+    });
 });
