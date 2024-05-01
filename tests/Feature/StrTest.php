@@ -195,4 +195,65 @@ describe('Str', function () {
         self::bulkCompare([Str::class, 'slug'],$testLib);
         $this->assertSame('bsm-allah',Str::slug('بسم الله', '-', 'en', ['allh' => 'allah']));
     });
+
+    test('snake', function () {
+        $testLib = [
+            'I would love            to see this in Snake CAse please!' => 'i_would_love_to_see_this_in_snake_c_ase_please!',
+            'fromCamelToSnake' => 'from_camel_to_snake',
+            'from-kebab-To-snake' => 'from_kebab_to_snake',
+            'FromStudlyToSnake' => 'from_studly_to_snake',
+
+            'foo-bar' => 'foo_bar',
+            'Foo-Bar' => 'foo_bar',
+            'Foo_Bar' => 'foo_bar',
+            'ŻółtaŁódka' => 'żółtałódka',
+        ];
+
+        self::bulkCompare([Str::class, 'snake'],$testLib);
+    });
+
+    test('trim', function () {
+        $testLib = [
+            '
+                frankly, i\'m no expert in whitespaces
+                ' => 'frankly, i\'m no expert in whitespaces',
+            '   foo bar   ' => 'foo bar',
+            'foo bar   ' => 'foo bar',
+            '   foo bar' => 'foo bar',
+            'foo bar' => 'foo bar',
+
+            ' foo    bar ' => 'foo    bar',
+            '   123    ' => '123',
+            'だ' => 'だ',
+            'ム' => 'ム',
+            '   だ    ' => 'だ',
+            '   ム    ' => 'ム',
+
+            " \xE9 " => "\xE9",
+        ];
+
+        expect(' foo bar ')->toBe(Str::trim(' foo bar ', ''));
+        expect('foo bar')->toBe(Str::trim(' foo bar ', ' '));
+        expect('foo  bar')->toBe(Str::trim('-foo  bar_', '-_'));
+
+        expect(
+            'foo bar'
+        )->toBe(
+            Str::trim('
+                foo bar
+            ')
+        );
+
+        expect(
+            'foo
+                bar'
+        )->toBe(
+            Str::trim('
+                foo
+                bar
+            ')
+        );
+
+        self::bulkCompare([Str::class, 'trim'],$testLib);
+    });
 });

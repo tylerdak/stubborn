@@ -13,6 +13,8 @@
 
 namespace Dakin\Stubborn\Support;
 
+use voku\helper\ASCII;
+
 class Str
 {
     /**
@@ -43,10 +45,10 @@ class Str
      * @param  string  $language
      * @return string
      */
-    /* public static function ascii($value, $language = 'en') */
-    /* { */
-    /*     return ASCII::to_ascii((string) $value, $language); */
-    /* } */
+    public static function ascii($value, $language = 'en')
+    {
+        return ASCII::to_ascii((string) $value, $language);
+    }
 
     /**
      * Transliterate a string to its closest ASCII representation.
@@ -56,10 +58,10 @@ class Str
      * @param  bool|null  $strict
      * @return string
      */
-    /* public static function transliterate($string, $unknown = '?', $strict = false) */
-    /* { */
-    /*     return ASCII::to_transliterate($string, $unknown, $strict); */
-    /* } */
+    public static function transliterate($string, $unknown = '?', $strict = false)
+    {
+        return ASCII::to_transliterate($string, $unknown, $strict);
+    }
 
     /**
      * Convert a value to camel case.
@@ -314,7 +316,7 @@ class Str
     public static function slug($title, $separator = '-', $language = 'en', $dictionary = ['@' => 'at'])
     {
         // replace with php change encoding?
-        /* $title = $language ? static::ascii($title, $language) : $title; */
+        $title = $language ? static::ascii($title, $language) : $title;
 
         // Convert all dashes/underscores into separator
         $flip = $separator === '-' ? '_' : '-';

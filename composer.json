@@ -12,7 +12,8 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "voku/portable-ascii": "^2.0"
     },
     "require-dev": {
         "pestphp/pest-plugin-laravel": "1.*|2.*",
