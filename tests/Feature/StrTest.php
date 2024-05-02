@@ -3,6 +3,20 @@
 use Dakin\Stubborn\Support\Str;
 
 describe('Str', function () {
+    test('ascii', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'ascii'],$testLib);
+    });
+
+    test('transliterate', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'transliterate'],$testLib);
+    });
+
     test('camel', function () {
         $testLib = [
             'wordtime' => 'wordtime',
