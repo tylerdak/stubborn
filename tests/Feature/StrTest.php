@@ -1,10 +1,16 @@
 <?php
 
 use Dakin\Stubborn\Support\Str;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 describe('Str', function () {
     test('ascii', function () {
         $testLib = [
+            '@' => '@',
+            'ü' => 'u',
+            'х Х щ Щ ъ Ъ иа йо' => ['h H sht Sht a A ia yo', 'bg'],
+            'ä ö ü Ä Ö Ü' => ['ae oe ue Ae Oe Ue', 'de'],
+            null => '',
         ];
 
         self::bulkCompare([Str::class, 'ascii'],$testLib);
@@ -12,6 +18,24 @@ describe('Str', function () {
 
     test('transliterate', function () {
         $testLib = [
+            'ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ' => ['abcdefghijklmnopqrstuvwxyz',false],
+            '⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳' => ['01234567891011121314151617181920',false],
+            '⓵⓶⓷⓸⓹⓺⓻⓼⓽⓾' => ['12345678910',false],
+            '⓿⓫⓬⓭⓮⓯⓰⓱⓲⓳⓴' => ['011121314151617181920',false],
+            'ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ' => ['test@laravel.com',false],
+            '🎂' => ['?',false],
+            'abcdefghijklmnopqrstuvwxyz' => ['abcdefghijklmnopqrstuvwxyz',false],
+            '0123456789' => ['0123456789',false],
+            'ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ' => ['abcdefghijklmnopqrstuvwxyz',true],
+            '⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳' => ['01234567891011121314151617181920',true],
+            '⓵⓶⓷⓸⓹⓺⓻⓼⓽⓾' => ['12345678910',true],
+            '⓿⓫⓬⓭⓮⓯⓰⓱⓲⓳⓴' => ['011121314151617181920',true],
+            'ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ' => ['test@laravel.com',true],
+            '🎂' => ['?',true],
+            'abcdefghijklmnopqrstuvwxyz' => ['abcdefghijklmnopqrstuvwxyz',true],
+            '0123456789' => ['0123456789',true],
+            '🎂🚧🏆' => ['HHH', 'H'],
+            '🎂' => ['Hello', 'Hello'],
         ];
 
         self::bulkCompare([Str::class, 'transliterate'],$testLib);
