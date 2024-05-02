@@ -309,4 +309,91 @@ describe('Str', function () {
 
         self::bulkCompare([Str::class, 'rtrim'],$testLib);
     });
+
+    test('squish', function () {
+        $testLib = [
+            '   please      remove the  spaces  inside      ' => 'please remove the spaces inside',
+
+            ' stubborn   php  package ' => 'stubborn php package',
+            "stubborn\t\tphp\n\npackage" => 'stubborn php package',
+            '   stubborn   php   package   ' => 'stubborn php package',
+            '   123    ' => '123',
+            'だ' => 'だ',
+            'ム' => 'ム',
+            '   だ    ' => 'だ',
+            '   ム    ' => 'ム',
+
+            'stubbornㅤㅤㅤphpㅤpackage' => 'stubborn php package',
+        ];
+
+        expect('stubborn php package')
+            ->toBe(
+                Str::squish('
+                stubborn
+                php
+                package
+            '));
+
+        self::bulkCompare([Str::class, 'squish'],$testLib);
+    });
+
+    test('studly', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'studly'],$testLib);
+    });
+
+    test('toBase64', function () {
+        $testLib = [
+            'i<3base64' => 'aTwzYmFzZTY0',
+            'i<3BaSe64' => 'aTwzQmFTZTY0',
+        ];
+
+        self::bulkCompare([Str::class, 'toBase64'],$testLib);
+    });
+
+    test('fromBase64', function () {
+        $testLib = [
+           'aTwzYmFzZTY0' => 'i<3base64',
+           'aTwzQmFTZTY0' => 'i<3BaSe64',
+        ];
+
+        self::bulkCompare([Str::class, 'fromBase64'],$testLib);
+    });
+
+    test('lcfirst', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'lcfirst'],$testLib);
+    });
+
+    test('ucfirst', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'ucfirst'],$testLib);
+    });
+
+    test('ucsplit', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'ucsplit'],$testLib);
+    });
+
+    test('wordCount', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'wordCount'],$testLib);
+    });
+
+    test('wordWrap', function () {
+        $testLib = [
+        ];
+
+        self::bulkCompare([Str::class, 'wordWrap'],$testLib);
+    });
 });
