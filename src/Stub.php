@@ -2,6 +2,7 @@
 
 namespace Dakin\Stubborn;
 
+use Dakin\Stubborn\Support\Str;
 use RuntimeException;
 
 class Stub
@@ -55,6 +56,8 @@ class Stub
      */
     protected ?string $contentBuffer = null;
 
+    public static array $modFunctions = [];
+
     /**
      * Set stub path.
      */
@@ -66,18 +69,16 @@ class Stub
         return $new;
     }
 
-    protected static function modFunctions() {
-        return [
-            'lower' => fn ($value) => strtolower($value),
-            'upper' => fn ($value) => strtoupper($value),
-        ];
-    }
-
     protected static function applyModifier(string $mod, string $value): string
     {
         $mod = strtolower($mod);
-        if ($todo = static::modFunctions()[$mod] ?? null) {
+        // first, try to find a mod in static::modFunctions
+        if ($todo = static::$modFunctions[$mod] ?? null) {
             return $todo($value);
+        }
+        // if that doesn't work, fallback to Str
+        if (method_exists(Str::class,$mod)) {
+            return Str::{$mod}($value);
         }
         return $value;
     }
