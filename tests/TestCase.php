@@ -31,6 +31,7 @@ EOL
         /* die(); */
         unlink(__DIR__ . '/Feature/test.stub');
         array_map('unlink', glob(__DIR__ . '/Feature/test*.stub'));
+        array_map('unlink', glob(__DIR__ . '/Generated/test*'));
         array_map('unlink', glob(__DIR__ . '/Generated/result*'));
     }
 
@@ -46,5 +47,18 @@ EOL
             }
             expect($callback($pre,...$args))->toBe($post);
         }
+    }
+    protected function readResult(?string $id = null): ?string {
+        if ($result = file_get_contents(__DIR__ . '/Generated/result_' . $id)) {
+            return $result;
+        }
+        return null;
+    }
+    protected function writeTest(?string $id = null, string $contents): ?string {
+        $filepath = __DIR__ . '/Generated/test_' . $id;
+        if ($result = file_put_contents($filepath, $contents)) {
+            return $filepath;
+        }
+        return null;
     }
 }
