@@ -2,15 +2,23 @@
 
 use Dakin\Stubborn\Stub;
 
-test('regex finds non-modded matches', function () {
+test('regex finds (and replaces) regular, modded, and multi-modded variables', function () {
+    file_put_contents(__DIR__ . '/test_regex.stub', <<<EOL
+{{ VARIABLE }}{{ VARIABLE::lower }}{{ VARIABLE::lower::lower }}
+EOL
+    );
+
     $stub = __DIR__ . '/test_regex.stub';
 
-    $result = Stub::from($stub)
-        ->to(__DIR__ . '/../App')
-        ->replace('VARIABLE','Dakin')
-        ->name('regex_result')
+    $success = Stub::from($stub)
+        ->to(__DIR__ . '/../Generated')
+        ->replace('VARIABLE','test')
+        ->name('result_regex')
         ->ext('php')
         ->generate();
+    expect($success)->toBeTrue();
+    expect(file_get_contents(__DIR__ . '/../Generated/result_regex.php'))
+        ->toBe('testtesttest');
 });
 
 /* test('generate stub successfully with all options', function () { */

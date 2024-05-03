@@ -24,18 +24,6 @@ class {{ CLASS }}
 }
 EOL
         );
-
-        file_put_contents(__DIR__ . '/Feature/test_regex.stub', <<<EOL
-<?php
-
-namespace {{ VARIABLE }};
-
-class {{ VARIABLE:fakemod-test.the_punctuation!::upper }}
-{
-    use Illuminate\Database\Eloquent\Factories\{{ VARIABLE::modifier::lower }};
-}
-EOL
-        );
     }
 
     protected function tearDown(): void
@@ -43,6 +31,7 @@ EOL
         /* die(); */
         unlink(__DIR__ . '/Feature/test.stub');
         array_map('unlink', glob(__DIR__ . '/Feature/test*.stub'));
+        array_map('unlink', glob(__DIR__ . '/Generated/result*'));
     }
 
     protected function bulkCompare($callback,$arr) {
