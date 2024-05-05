@@ -56,6 +56,8 @@ class Stub
      */
     protected ?string $contentBuffer = null;
 
+    protected static ?string $stubFolder = null;
+
     public static array $modFunctions = [];
 
     /**
@@ -64,7 +66,12 @@ class Stub
     public static function from(string $path): static
     {
         $new = new self();
-        $new->from = $path;
+        if (static::$stubFolder) {
+            $new->from = static::$stubFolder . DIRECTORY_SEPARATOR . $path;
+        }
+        else {
+            $new->from = $path;
+        }
 
         return $new;
     }
@@ -244,6 +251,22 @@ class Stub
         if (! file_exists($this->from)) {
             throw new RuntimeException('The stub file does not exist, please enter a valid path.');
         }
+    }
+
+    public static function resetFolder(): bool {
+        return (static::$stubFolder = null) === null;
+    }
+
+    public static function setFolder($path): bool {
+        if (! is_dir($path)) {
+            return false;
+        }
+        static::$stubFolder = $path;
+        return (bool)(static::$stubFolder);
+    }
+
+    public static function folder(): ?string {
+        return static::$stubFolder;
     }
 
 }
