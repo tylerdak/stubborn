@@ -40,7 +40,7 @@ class Stub
      *
      * @var array
      */
-    protected array $replaces;
+    protected array $replaces = [];
 
     /**
      * The regex string that finds replace candidates.
@@ -253,10 +253,21 @@ class Stub
         }
     }
 
+    /**
+     * Resets the statically stored stub folder.
+     *
+     * @return bool Success/Failure flag
+     */
     public static function resetFolder(): bool {
         return (static::$stubFolder = null) === null;
     }
 
+    /**
+     * Sets the statically stored stub folder to make ::from calls less verbose.
+     *
+     * @param string $path The path where Stubborn should expect your stubs to be.
+     * @return bool Success/Failure flag
+     */
     public static function setFolder($path): bool {
         if (! is_dir($path)) {
             return false;
@@ -265,6 +276,11 @@ class Stub
         return (bool)(static::$stubFolder);
     }
 
+    /**
+     * Returns the statically stored stub folder.
+     *
+     * @return ?string
+     */
     public static function folder(): ?string {
         return static::$stubFolder;
     }
