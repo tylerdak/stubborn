@@ -14,6 +14,7 @@
     - [`replaces`](#replaces)
     - [`download`](#download)
     - [`generate`](#generate)
+    - [Modifiers](#modifiers)
 - [Contributors](#contributors)
 - [Security](#security)
 - [Changelog](#changelog)
