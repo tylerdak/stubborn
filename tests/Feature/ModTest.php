@@ -46,3 +46,17 @@ test('mods can be layered', function () {
     expect($success)->toBeTrue();
     expect($this->readResult('layers.php'))->toBe('myName my-name my_name MyName MYNAME');
 });
+
+test('mods can be combined', function () {
+    $stub = $this->writeTest('layers', "{{ VAR::ltrim::rtrim }}");
+
+    $success = Stub::from($stub)
+        ->to(__DIR__ . '/../Generated')
+        ->replace('VAR','       Test Something       ')
+        ->name('result_combine')
+        ->ext('php')
+        ->generate();
+
+    expect($success)->toBeTrue();
+    expect($this->readResult('combine.php'))->toBe('Test Something');
+});
