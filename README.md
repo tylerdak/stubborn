@@ -178,6 +178,50 @@ class MyClass
 }
 ```
 
+<a name="modifiers"></a>
+### Modifiers
+
+Stubborn adds support for modifiers. Modifiers let you use a single replace string in multiple forms.
+Here's an example... Let's say you have a class stub that can introduce itself:
+```php
+<?php
+
+namespace App;
+
+class {{ NAME }}
+{
+    public function introduce(): string {
+        return "I am a {{ NAME }}";
+    }
+}
+```
+
+This is fine, but maybe I want the class to shout its name in ALL CAPS. Instead of declaring that behavior from my Stub generation code, I can put that intention directly in the stub file.
+> Mind you, this particular use case would benefit more from not having the class name statically declared twice, but for demo purposes...
+
+```php
+<?php
+
+namespace App;
+
+class {{ NAME::studly }}
+{
+    public function introduce(): string {
+        return "I am a {{ NAME::upper }}!";
+    }
+}
+```
+There's a new Str class that's been adopted from the [Laravel framework](https://github.com/laravel/framework) to offer several helpers as modifiers. Most of the single parameter methods from that class can be used as modifiers by adding `::methodName` after the variable name.
+These modifiers can also be chained together: `{{ NAME::upper::trim }}`.
+
+In addition, you can add your own modifiers by editing the Stub::modFunctions associative array. You can pass in the modifier name as the key and a function accepting a string as the value:
+```php
+use Dakin\Stubborn\Stub;
+
+Stub::modFunctions['repeat'] = fn ($theString) => $theString . $theString;
+```
+Now, stubs with `{{ VAR_NAME::repeat }}` will repeat the replace value once.
+
 <a name="contributors"></a>
 ## Contributors
 The crew at [Binafy](https://github.com/binafy) did most of the heavy lifting on this with their [Laravel-embedded version](https://github.com/binafy/laravel-stub) of this package.
