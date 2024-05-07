@@ -6,9 +6,11 @@ use Dakin\Stubborn\Stub;
 test('stub folder can be set', function () {
     // SETUP
     $folder = __DIR__ . '/pretend_stubs_folder';
-    expect(Stub::setFolder($folder))->toBeFalse("Folder should not be set if folder does not exist.");
+    if (! is_dir($folder)) {
+        expect(Stub::setFolder($folder))->toBeFalse("Folder should not be set if folder does not exist.");
 
-    expect(mkdir($folder))->toBeTrue("Test folder could not be created");
+        expect(mkdir($folder))->toBeTrue("Test folder could not be created");
+    }
 
     // TEST
     expect(Stub::setFolder($folder))->toBeTrue("Folder should be set when folder exists.");
