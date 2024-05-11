@@ -15,6 +15,7 @@
     - [`download`](#download)
     - [`generate`](#generate)
     - [Modifiers](#modifiers)
+    - [Setting the stub folder](#stub_folder)
 - [Contributors](#contributors)
 - [Security](#security)
 - [Changelog](#changelog)
@@ -222,6 +223,28 @@ use Dakin\Stubborn\Stub;
 Stub::modFunctions['repeat'] = fn ($theString) => $theString . $theString;
 ```
 Now, stubs with `{{ VAR_NAME::repeat }}` will repeat the replace value once.
+
+<a name="stub_folder"></a>
+### Setting a stub folder
+It's likely you'll have a single place where you want to keep all of your stubs (`{project_path}/stubs`, for example). It can be a pain to keep providing that folder path as context when generating stubs.
+```php
+$stubber = Stub::from('path/to/my/stubs/the-actual.stub');
+```
+Instead, you may set the stub folder a single time using the static `setFolder` method.
+```php
+// During setup...
+Stub::setFolder('path/to/my/stubs');
+
+// Later on...
+$stubber = Stub::from('the-actual.stub');
+```
+
+A couple notes about this:
+- `setFolder` checks that your path is, in fact, a directory. Disable that behavior by setting the `safe` parameter to false.
+- Related static methods `resetFolder` and `folder` are available for you to, respectively:
+    - Set the stub folder to null, restoring standard `from` behavior
+    - Get the current stub folder value
+- `setFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
 
 <a name="contributors"></a>
 ## Contributors

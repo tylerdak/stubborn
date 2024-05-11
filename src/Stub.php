@@ -268,8 +268,8 @@ class Stub
      * @param string $path The path where Stubborn should expect your stubs to be.
      * @return bool Success/Failure flag
      */
-    public static function setFolder($path): bool {
-        if (! is_dir($path)) {
+    public static function setFolder($path, bool $safe = true): bool {
+        if ($safe && ! is_dir($path)) {
             return false;
         }
         static::$stubFolder = $path;
