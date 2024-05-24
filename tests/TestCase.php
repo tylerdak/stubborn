@@ -54,9 +54,9 @@ EOL
         }
         return null;
     }
-    protected function writeTest(?string $id = null, string $contents): ?string {
+    protected function writeTest(?string $id = null, string $contents = ""): ?string {
         $filepath = __DIR__ . '/Generated/test_' . $id;
-        if ($result = file_put_contents($filepath, $contents)) {
+        if (file_put_contents($filepath, $contents)) {
             return $filepath;
         }
         return null;
