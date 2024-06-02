@@ -221,6 +221,8 @@ class {{ NAME::studly }}
     }
 }
 ```
+Great, now I can pass `class name` or `Class Name` to Stubborn a single time, and still get that token presented in the proper way.
+
 There's a new Str class that's been adopted from the [Laravel framework](https://github.com/laravel/framework) to offer several helpers as modifiers. Most of the single parameter methods from that class can be used as modifiers by adding `::methodName` after the variable name.
 These modifiers can also be chained together: `{{ NAME::upper::trim }}`.
 
