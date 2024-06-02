@@ -19,7 +19,7 @@ class Stub
      *
      * @var string
      */
-    protected string $to;
+    protected ?string $to = null;
 
     /**
      * The new name of stub file.
@@ -57,6 +57,7 @@ class Stub
     protected ?string $contentBuffer = null;
 
     protected static ?string $stubFolder = null;
+    protected static ?string $sourceFolder = null;
 
     public static array $modFunctions = [];
 
@@ -71,6 +72,10 @@ class Stub
         }
         else {
             $new->from = $path;
+        }
+
+        if (static::$sourceFolder && is_dir($toFolder = static::$sourceFolder . DIRECTORY_SEPARATOR . $path)) {
+            return $new->to($toFolder);
         }
 
         return $new;
