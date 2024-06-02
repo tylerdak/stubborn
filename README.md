@@ -74,6 +74,7 @@ class {{ CLASS }}
 In order to use Stubborn, you need to import the `Stubborn\Stub` class:
 
 ```php
+<?php
 use Dakin\Stubborn\Stub;
 
 Stub::class;
@@ -85,6 +86,7 @@ Stub::class;
 First thing, you need to use the `from` method to give the stub path:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub');
 ```
 
@@ -94,6 +96,7 @@ Stub::from(__DIR__ . 'model.stub');
 Next, you'll want to specify the destination directory of the stub file:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App');
 ```
@@ -104,6 +107,7 @@ Stub::from(__DIR__ . 'model.stub')
 You can set the stub file with this, but make sure to **leave out the stub extension**:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model');
@@ -115,6 +119,7 @@ Stub::from(__DIR__ . 'model.stub')
 You can determine the stub extension:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
@@ -127,6 +132,7 @@ Stub::from(__DIR__ . 'model.stub')
 The `replace` method takes two parameters, the first one is the key (variable) and the second one is the value. The value will be replaced with the variable:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
@@ -140,6 +146,7 @@ Stub::from(__DIR__ . 'model.stub')
 The `replaces` method takes an array. If you want to replace multiple variables you can use this method:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
@@ -156,6 +163,7 @@ Stub::from(__DIR__ . 'model.stub')
 To generate the stub file, you need to use the `generate` method at the end of the chain to generate stub file:
 
 ```php
+<?php
 Stub::from(__DIR__ . 'model.stub')
     ->to(__DIR__ . '/App')
     ->name('new-model')
@@ -218,6 +226,7 @@ These modifiers can also be chained together: `{{ NAME::upper::trim }}`.
 
 In addition, you can add your own modifiers by editing the Stub::modFunctions associative array. You can pass in the modifier name as the key and a function accepting a string as the value:
 ```php
+<?php
 use Dakin\Stubborn\Stub;
 
 Stub::modFunctions['repeat'] = fn ($theString) => $theString . $theString;
@@ -228,10 +237,12 @@ Now, stubs with `{{ VAR_NAME::repeat }}` will repeat the replace value once.
 ### Setting a stub folder
 It's likely you'll have a single place where you want to keep all of your stubs (`{project_path}/stubs`, for example). It can be a pain to keep providing that folder path as context when generating stubs.
 ```php
+<?php
 $stubber = Stub::from('path/to/my/stubs/the-actual.stub');
 ```
 Instead, you may set the stub folder a single time using the static `setFolder` method.
 ```php
+<?php
 // During setup...
 Stub::setFolder('path/to/my/stubs');
 
@@ -248,7 +259,9 @@ A couple notes about this:
 
 <a name="contributors"></a>
 ## Contributors
-The crew at [Binafy](https://github.com/binafy) did most of the heavy lifting on this with their [Laravel-embedded version](https://github.com/binafy/laravel-stub) of this package.
+The crew at [Binafy](https://github.com/binafy) did most of the heavy lifting for the core stub features with their [Laravel-embedded version](https://github.com/binafy/laravel-stub) of this package.
+
+
 
 <a name="security"></a>
 ## Security
