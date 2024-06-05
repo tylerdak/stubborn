@@ -7,15 +7,15 @@ test('stub folder can be set', function () {
     // SETUP
     $folder = __DIR__ . '/pretend_stubs_folder';
     if (! is_dir($folder)) {
-        expect(Stub::setFolder($folder))->toBeFalse("Folder should not be set if folder does not exist.");
+        expect(Stub::setStubFolder($folder))->toBeFalse("Folder should not be set if folder does not exist.");
 
         expect(mkdir($folder))->toBeTrue("Test folder could not be created");
     }
 
     // TEST
-    expect(Stub::setFolder($folder))->toBeTrue("Folder should be set when folder exists.");
+    expect(Stub::setStubFolder($folder))->toBeTrue("Folder should be set when folder exists.");
 
-    expect(Stub::folder())->toBe($folder, 'Returned Stub folder was incorrect.');
+    expect(Stub::stubFolder())->toBe($folder, 'Returned Stub folder was incorrect.');
 });
 
 test('stub folder is prepended to from path', function () {
@@ -40,6 +40,6 @@ EOL);
     unlink($folder . DIRECTORY_SEPARATOR . 'testfile');
     expect(rmdir($folder))->toBeTrue("Test folder could not be removed for cleanup.");
 
-    expect(Stub::resetFolder())->toBeTrue("Stub folder was not reset. Future tests may fail.");
+    expect(Stub::resetStubFolder())->toBeTrue("Stub folder was not reset. Future tests may fail.");
 });
 

@@ -7,7 +7,7 @@ $contextFolder = __DIR__ . '/pretend_src_folder';
 
 test('setup', function () use ($stubsFolder) {
     if (! is_dir($stubsFolder)) {
-        expect(Stub::setFolder($stubsFolder))
+        expect(Stub::setStubFolder($stubsFolder))
             ->toBeFalse("Folder should not be set if folder does not exist.");
 
         expect(mkdir($stubsFolder))
@@ -35,7 +35,7 @@ test('setup', function () use ($stubsFolder) {
             ->toBeTrue("Test folder context-Support/Enums could not be created");
     }
 
-    Stub::setFolder($stubsFolder);
+    Stub::setStubFolder($stubsFolder);
 });
 
 test('implicit-to not used without context folder', function () {
@@ -70,6 +70,6 @@ test('teardown', function () use ($stubsFolder) {
     expect(rmdir($stubsFolder))
         ->toBeTrue("Test folder could not be removed for cleanup.");
 
-    expect(Stub::resetFolder())
+    expect(Stub::resetStubFolder())
         ->toBeTrue("Stub folder was not reset. Future tests may fail.");
 });

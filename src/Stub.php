@@ -57,7 +57,7 @@ class Stub
     protected ?string $contentBuffer = null;
 
     protected static ?string $stubFolder = null;
-    protected static ?string $sourceFolder = null;
+    protected static ?string $contextFolder = null;
 
     public static array $modFunctions = [];
 
@@ -66,19 +66,15 @@ class Stub
      */
     public static function from(string $path): static
     {
-        $new = new self();
+        $stub = new self();
         if (static::$stubFolder) {
-            $new->from = static::$stubFolder . DIRECTORY_SEPARATOR . $path;
+            $stub->from = static::$stubFolder . DIRECTORY_SEPARATOR . $path;
         }
         else {
-            $new->from = $path;
+            $stub->from = $path;
         }
 
-        if (static::$sourceFolder && is_dir($toFolder = static::$sourceFolder . DIRECTORY_SEPARATOR . $path)) {
-            return $new->to($toFolder);
-        }
-
-        return $new;
+        return $stub->setImpliedProperties($path);
     }
 
     protected static function applyModifier(string $mod, string $value): string
@@ -258,13 +254,14 @@ class Stub
         }
     }
 
-    /**
-     * Resets the statically stored stub folder.
-     *
-     * @return bool Success/Failure flag
-     */
-    public static function resetFolder(): bool {
-        return (static::$stubFolder = null) === null;
+    public function setImpliedProperties(string $path) {
+        if (static::$contextFolder) {
+            $extension = null;
+            [$path, $extension] = explode('.',$path,2);
+            $toFolder = static::$contextFolder . DIRECTORY_SEPARATOR . $path;
+            return $this->to($toFolder)->ext($extension);
+        }
+        return $this;
     }
 
     /**
@@ -273,7 +270,7 @@ class Stub
      * @param string $path The path where Stubborn should expect your stubs to be.
      * @return bool Success/Failure flag
      */
-    public static function setFolder($path, bool $safe = true): bool {
+    public static function setStubFolder($path, bool $safe = true): bool {
         if ($safe && ! is_dir($path)) {
             return false;
         }
@@ -282,12 +279,53 @@ class Stub
     }
 
     /**
+     * Resets the statically stored stub folder.
+     *
+     * @return bool Success/Failure flag
+     */
+    public static function resetStubFolder(): bool {
+        return (static::$stubFolder = null) === null;
+    }
+
+    /**
      * Returns the statically stored stub folder.
      *
      * @return ?string
      */
-    public static function folder(): ?string {
+    public static function stubFolder(): ?string {
         return static::$stubFolder;
+    }
+
+    /**
+     * Sets the statically stored stub folder to make ::from calls less verbose.
+     *
+     * @param string $path The path where Stubborn should expect your stubs to be.
+     * @return bool Success/Failure flag
+     */
+    public static function setContextFolder($path, bool $safe = true): bool {
+        if ($safe && ! is_dir($path)) {
+            return false;
+        }
+        static::$contextFolder = $path;
+        return (bool)(static::$contextFolder);
+    }
+
+    /**
+     * Resets the statically stored context folder.
+     *
+     * @return bool Success/Failure flag
+     */
+    public static function resetContextFolder(): bool {
+        return (static::$contextFolder = null) === null;
+    }
+
+    /**
+     * Returns the statically stored context folder.
+     *
+     * @return ?string
+     */
+    public static function contextFolder(): ?string {
+        return static::$contextFolder;
     }
 
 }

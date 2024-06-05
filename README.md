@@ -246,7 +246,7 @@ Instead, you may set the stub folder a single time using the static `setFolder` 
 ```php
 <?php
 // During setup...
-Stub::setFolder('path/to/my/stubs');
+Stub::setStubFolder('path/to/my/stubs');
 
 // Later on...
 $stubber = Stub::from('the-actual.stub');
