@@ -237,7 +237,7 @@ class Stub
      */
     private function getPath(): string
     {
-        $path = "{$this->to}/{$this->name}";
+        $path = $this->to . DIRECTORY_SEPARATOR . $this->name;
 
         // Add extension
         if (! is_null($this->ext)) {
@@ -255,10 +255,10 @@ class Stub
     }
 
     public function setImpliedProperties(string $path) {
-        if (static::$contextFolder) {
+        if (static::contextFolder()) {
             $extension = null;
             [$path, $extension] = explode('.',$path,2);
-            $toFolder = static::$contextFolder . DIRECTORY_SEPARATOR . $path;
+            $toFolder = static::contextFolder() . DIRECTORY_SEPARATOR . $path;
             return $this->to($toFolder)->ext($extension);
         }
         return $this;

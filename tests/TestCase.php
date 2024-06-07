@@ -54,11 +54,31 @@ EOL
         }
         return null;
     }
+
     protected function writeTest(?string $id = null, string $contents = ""): ?string {
         $filepath = __DIR__ . '/Generated/test_' . $id;
         if (file_put_contents($filepath, $contents)) {
             return $filepath;
         }
         return null;
+    }
+
+    protected function deleteDir(string $dirPath): bool
+    {
+        if (! is_dir($dirPath)) {
+            throw new \InvalidArgumentException("$dirPath must be a directory");
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                $this->deleteDir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        return rmdir($dirPath);
     }
 }
