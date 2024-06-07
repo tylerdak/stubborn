@@ -15,7 +15,8 @@
     - [`download`](#download)
     - [`generate`](#generate)
     - [Modifiers](#modifiers)
-    - [Setting the stub folder](#stub_folder)
+    - [Setting the Stub Folder](#stub_folder)
+    - [Implicit Target Directory](#implicit_to)
 - [Contributors](#contributors)
 - [Security](#security)
 - [Changelog](#changelog)
@@ -258,6 +259,10 @@ A couple notes about this:
     - Set the stub folder to null, restoring standard `from` behavior
     - Get the current stub folder value
 - `setFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
+
+<a name="stub_folder"></a>
+### Implicit Target Directory
+
 
 <a name="contributors"></a>
 ## Contributors
