@@ -243,7 +243,7 @@ It's likely you'll have a single place where you want to keep all of your stubs 
 <?php
 $stubber = Stub::from('path/to/my/stubs/the-actual.stub');
 ```
-Instead, you may set the stub folder a single time using the static `setFolder` method.
+Instead, you may set the stub folder a single time using the static `setStubFolder` method.
 ```php
 <?php
 // During setup...
@@ -254,14 +254,15 @@ $stubber = Stub::from('the-actual.stub');
 ```
 
 A couple notes about this:
-- `setFolder` checks that your path is, in fact, a directory. Disable that behavior by setting the `safe` parameter to false.
-- Related static methods `resetFolder` and `folder` are available for you to, respectively:
+- `setStubFolder` checks that your path is, in fact, a directory. Disable that behavior by setting the `safe` parameter to false.
+- Related static methods `resetStubFolder` and `stubFolder` are available for you to, respectively:
     - Set the stub folder to null, restoring standard `from` behavior
     - Get the current stub folder value
-- `setFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
+- `setStubFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
 
 <a name="stub_folder"></a>
-### Implicit Target Directory
+### Setting a Context Folder
+Similar to the Stub Folder option, Stubborn provides a Context Folder option. If you have something like a `src` directory where all of your stubs tend to go, you may provide the path to that directory as a parameter to `Stubborn::setContextFolder`. By doing so, you can remove that part of the path from 
 
 
 <a name="contributors"></a>
