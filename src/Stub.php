@@ -114,10 +114,14 @@ class Stub
     /**
      * Set stub extension.
      */
-    public function ext(string $ext): static
+    public function ext(?string $ext = null): static
     {
-        $this->ext = $ext;
-
+        if (!$ext) {
+            $this->ext = null;
+        }
+        else {
+            $this->ext = $ext;
+        }
         return $this;
     }
 
@@ -192,7 +196,7 @@ class Stub
     {
         // Check destination path is valid
         if (! is_dir($this->to)) {
-            throw new RuntimeException('The given folder path is not valid.');
+            throw new RuntimeException('The given folder path is not valid. ' . "({$this->to})");
         }
 
         // Validates src path and reads content
@@ -257,9 +261,14 @@ class Stub
     public function setImpliedProperties(string $path) {
         if (static::contextFolder()) {
             $extension = null;
-            [$path, $extension] = explode('.',$path,2);
+            $parts = explode('.',$path,2);
+            $path = $parts[0];
+            if (count($parts) > 1) { $extension = $parts[1]; }
             $toFolder = static::contextFolder() . DIRECTORY_SEPARATOR . $path;
-            return $this->to($toFolder)->ext($extension);
+            if (is_dir($toFolder)) {
+                return $this->to($toFolder)->ext($extension);
+            }
+            $this->to(static::contextFolder())->ext($extension);
         }
         return $this;
     }
@@ -303,7 +312,7 @@ class Stub
      * @return bool Success/Failure flag
      */
     public static function setContextFolder($path, bool $safe = true): bool {
-        if ($safe && ! is_dir($path)) {
+        if ($safe && !is_dir($path)) {
             return false;
         }
         static::$contextFolder = $path;
