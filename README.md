@@ -15,7 +15,9 @@
     - [`download`](#download)
     - [`generate`](#generate)
     - [Modifiers](#modifiers)
-    - [Setting the stub folder](#stub_folder)
+    - [Setting a Stub Folder](#stub_folder)
+    - [Setting a Context Folder](#context_folder)
+    - [Implicit Target Dir and Extensions](#implicit_to_ext)
 - [Contributors](#contributors)
 - [Security](#security)
 - [Changelog](#changelog)
@@ -25,6 +27,14 @@
 ## Introduction
 
 The Stubborn package enhances the PHP development workflow by providing a set of customizable stubs. Stubs are templates used to scaffold code snippets for various components like models, controllers, and migrations. With Stubborn, developers can easily tailor these stubs to match their project's coding standards and conventions. This package aims to streamline the code generation process, fostering consistency and efficiency in PHP projects. Explore the customization options and boost your development speed with Stubborn.
+
+Generating new files from stubs can be as simple as this:
+```php
+<?php
+Stub::from('Support/Enums.php')
+    ->name('Color')
+    ->generate();
+```
 
 <a name="requirements"></a>
 ## Requirements
@@ -236,28 +246,76 @@ Stub::modFunctions['repeat'] = fn ($theString) => $theString . $theString;
 Now, stubs with `{{ VAR_NAME::repeat }}` will repeat the replace value once.
 
 <a name="stub_folder"></a>
-### Setting a stub folder
+### Setting a Stub Folder
 It's likely you'll have a single place where you want to keep all of your stubs (`{project_path}/stubs`, for example). It can be a pain to keep providing that folder path as context when generating stubs.
 ```php
 <?php
 $stubber = Stub::from('path/to/my/stubs/the-actual.stub');
 ```
-Instead, you may set the stub folder a single time using the static `setFolder` method.
+Instead, you may set the stub folder a single time using the static `setStubFolder` method.
 ```php
 <?php
 // During setup...
-Stub::setFolder('path/to/my/stubs');
+Stub::setStubFolder('path/to/my/stubs');
 
 // Later on...
 $stubber = Stub::from('the-actual.stub');
 ```
 
 A couple notes about this:
-- `setFolder` checks that your path is, in fact, a directory. Disable that behavior by setting the `safe` parameter to false.
-- Related static methods `resetFolder` and `folder` are available for you to, respectively:
+- `setStubFolder` checks that your path is, in fact, a directory. Disable that behavior by setting the `safe` parameter to false.
+- Related static methods `resetStubFolder` and `stubFolder` are available for you to, respectively:
     - Set the stub folder to null, restoring standard `from` behavior
     - Get the current stub folder value
-- `setFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
+- `setStubFolder` returns a boolean representing success/failure. If the path given is not a directory and $safe is set to true, it will return false. Otherwise, it returns the stubFolder value casted to a bool.
+
+<a name="context_folder"></a>
+### Setting a Context Folder
+```php
+<?php
+Stub::setContextFolder('path/to/my/src_folder')
+```
+Similar to the Stub Folder option, Stubborn provides a Context Folder option. If you have something like a `src` directory where all of your stubs tend to go, you may provide the path to that directory as a parameter to `Stubborn::setContextFolder`. By doing so, you can remove that part of the path when you call Stub::to.
+
+Before Stub and Context folder:
+```php
+<?php
+$stubber = Stub::from('./stubs/the_actual.stub')
+    ->to('./src/Support')
+    ->name('NewClass')
+    ->ext('php');
+```
+
+After:
+```php
+<?php
+$stubber = Stub::from('the_actual.stub')
+    ->to('Support')
+    ->name('NewClass')
+    ->ext('php');
+```
+
+<a name="implicit_to_ext"></a>
+### Implicit Target Dir and Extensions
+An additional benefit to setting up the Stub and Context folders is being able to omit some of these chained calls from your Stub generation.
+
+Imagine a stub folder structure that matches the src folder. Basic Stub generation with this structure may look something like this:
+```php
+<?php
+$stubber = Stub::from('./stubs/Support/Enums.php')
+    ->to('./src/Support/Enums')
+    ->name('Color')
+    ->ext('php');
+```
+
+Fine, but a bit redundant. When you provide the context folder, Stubborn will try to infer your Stub::$to and your Stub::$ext based on the path provided to Stub::from.
+```php
+<?php
+$stubber = Stub::from('Support/Enums.php')
+    ->name('Color');
+```
+Great, this still creates the same file, but with a much slimmer set of calls.
+
 
 <a name="contributors"></a>
 ## Contributors
