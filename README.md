@@ -57,6 +57,8 @@ You don't need to publish anything.
 <a name="usage"></a>
 ## Usage
 
+> Note that for many of these examples, especially those towards the bottom, I've omitted the `->generate()` call for the sake of brevity. If you want your stubs to actually generate, don't forget to add `->generate()`!
+
 <a name="create-a-stub-file"></a>
 ### Create a stub file
 First of all, create a stub file called `model.stub`:
