@@ -128,6 +128,17 @@ test('lack of extension is okay', function () use ($contextFolder, $sampleStubCo
         ->toBe($sampleStubContent);
 });
 
+test('to can be changed with contextFolder taken into account', function () use ($contextFolder, $sampleStubContent) {
+    expect(Stub::from('something')
+        ->name('this_should_go_in_support')
+        ->to('Support')
+        ->generate()
+    )->toBeTrue();
+
+    expect(file_get_contents($contextFolder . '/Support/this_should_go_in_support'))
+        ->toBe($sampleStubContent);
+});
+
 test('teardown', function () use ($stubsFolder, $contextFolder) {
     expect(Stub::resetStubFolder())
         ->toBeTrue("Stub folder was not reset. Future tests may fail.");

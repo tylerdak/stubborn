@@ -94,9 +94,17 @@ class Stub
     /**
      * Set stub destination path.
      */
-    public function to(string $to): static
+    public function to(?string $to = null): static
     {
-        $this->to = $to;
+        if (static::contextFolder()) {
+            if (!$this->to) {
+                $this->to = static::contextFolder();
+            }
+            $this->to = static::contextFolder() . DIRECTORY_SEPARATOR . $to;
+        }
+        else {
+            $this->to = $to;
+        }
 
         return $this;
     }
@@ -265,10 +273,10 @@ class Stub
             $path = $parts[0];
             if (count($parts) > 1) { $extension = $parts[1]; }
             $toFolder = static::contextFolder() . DIRECTORY_SEPARATOR . $path;
-            if (is_dir($toFolder)) {
-                return $this->to($toFolder)->ext($extension);
+            if (!is_dir($toFolder)) {
+                $path = null;
             }
-            $this->to(static::contextFolder())->ext($extension);
+            return $this->to($path)->ext($extension);
         }
         return $this;
     }
