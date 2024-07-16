@@ -49,7 +49,7 @@ Stub::from('Support/Enums.php')
 You can install the package with Composer, but make sure to add this repository (as type git) in your composer.json. When this package is available on packagist, you can skip this step (and it won't be mentioned here).
 Once the repository is added, run:
 ```bash
-composer require tylerdak/stubborn
+composer require dakin/stubborn
 ```
 
 You don't need to publish anything.
